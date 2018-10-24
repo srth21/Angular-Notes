@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<!-- ng-app denotes the section of code angular controles -->
+
+<html lang="en" dir="ltr" >
+  <head>
+
+    <meta charset="utf-8">
+
+    <title>Basic Angular App</title>
+
+    <!--Loading the Angular library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js">
+    </script>
+
+  </head>
+
+  <body ng-app>
+
+    <!-- {{}} denotes either one way binding or expressions -->
+    <h1> Hello {{1+2}}!</h1>
+
+    <!-- ng-model tells angular to store the value that the user enters in the name variable -->
+    <input type="text" ng-model="name" placeholder="Enter your name..." >
+
+    <h1> Hello <span ng-bind="name"> </span> </h1>
+
+    <!-- <<span ng-bind="name"></span> is the same as {{name}} -->
+  </body>
+
+</html>
