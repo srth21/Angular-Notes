@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" ng-app="notesApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Displaying Arrays</title>
+
+    <!--Loading the Angular library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js">
+    </script>
+
+    <script type="text/javascript">
+
+      angular.module('notesApp',[])
+      .controller('mainControl',[
+
+      function(){
+
+        console.log("Main Controller created.");
+        var self=this;
+
+        //an array of json objects
+        self.notes=[
+        { name : "sai", usn : "255"},
+        { name : "sachit", usn : "251"},
+        { name : "sayak", usn : "273"}
+        ];
+
+      }]);
+
+    </script>
+
+  </head>
+  <body ng-controller="mainControl as main">
+
+    <!--
+    using the ng-repeat directive
+    iterate over a list and apply to a new DOM Element
+    seperatelly.
+      -->
+    <div ng-repeat="note in main.notes">
+      <p> First Element : {{$first}} </p>
+      <p> Middle Element : {{$middle}} </p>
+      <p> Last Element : {{$last}} </p>
+      <p> Index  : {{$index}} </p>
+      <p> Even Index : {{$even}} </p>
+      <p> Odd Index : {{$odd}} </p>
+      <p> Hi {{note.name}}. Your USN is {{note.usn}}. </p>
+    </div>
+
+  </body>
+</html>

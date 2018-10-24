@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" ng-app="notesApp">
+  <head>
+    <style media="screen">
+      .done {
+        background-color: green;
+        }
+        .pending {
+        background-color: red;
+        }
+    </style>
+    <meta charset="utf-8">
+    <title>Displaying Arrays</title>
+
+    <!--Loading the Angular library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js">
+    </script>
+
+    <script type="text/javascript">
+
+      angular.module('notesApp',[])
+      .controller('mainControl',[
+
+      function(){
+
+        console.log("Main Controller created.");
+        var self=this;
+
+        //an array of json objects
+        self.notes=[
+        { name : "sai", usn : "255", done: true,lastname:"rohit"},
+        { name : "sachit", usn : "251",done: false,lastname:"batra"},
+        { name : "sayak", usn : "273",done: true}
+        ];
+
+        self.getNoteClass = function(status)
+        {
+          return {
+            done : status,
+            pending : !status
+          };
+        };
+      }]);
+
+    </script>
+
+  </head>
+  <body ng-controller="mainControl as main">
+
+    <!--
+    using the ng-repeat directive
+    iterate over a list and apply to a new DOM Element
+    seperatelly.
+      -->
+    <div ng-repeat="note in main.notes"
+      ng-class="main.getClass(note.done)">
+      <p> Hi {{note.name}}. Your USN is {{note.usn}}. </p>
+
+      <!-- ng-show displays based on a condition -->
+
+      <span class="assignee"
+      ng-show="note.lastname"
+      ng-bind="note.lastname">
+      </span>
+    </div>
+
+  </body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!-- ng-app denotes the section of code angular controls -->
+<!-- also takes the name of the module -->
+<html lang="en" dir="ltr" ng-app="notesApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Controllers Basics</title>
+
+    <!--Loading the Angular library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js">
+    </script>
+
+
+    <script type="text/javascript">
+
+      //creating a module first
+      //this module was set as the module for the ng-app
+      angular.module("notesApp",[])
+      //we also add a controller associated with the module
+      .controller('mainControl',
+      [
+        function() {
+
+          console.log("Main Controller created.");
+
+          //name will be accessible in html
+          // name declared on the controller's instance
+          this.name = "sai";
+
+          //score wont be
+          //local variable
+          var score = 100;
+
+          this.message="Score will be displayed here";
+
+          // a function can also be a member of the controller
+          this.changeMessage= function()
+          {
+            this.message="Score is "+score;
+          };
+
+        }]);
+
+    </script>
+
+  </head>
+
+  <!-- ng-controller tells Angular to instantiate an
+instance of that controller and attach it to the DOM Element-->
+  <body ng-controller="mainControl as main">
+
+    <h1> Hello {{main.name}}.</h1>
+
+    <!-- ng-click binds the event to a function from the controller instance -->
+    <input type="button" value="Click to display score." ng-click="main.changeMessage()">
+
+    <p> {{main.message}} </p>
+
+  </body>
+</html>
