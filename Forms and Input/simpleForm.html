@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Basic Two Way Binding</title>
+
+    <!--Loading the Angular library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js">
+    </script>
+
+    <script type="text/javascript">
+
+      angular.module("myApp",[])
+      .controller("myController",[
+
+      function(){
+
+          var self=this;
+
+          self.submit=function()
+          {
+            console.log("User submitted with :",self.user);
+          };
+
+      }]);
+
+    </script>
+  </head>
+  <body ng-controller="myController as ctrl">
+
+    <!-- ng-model is used to bind the variable of userName in this
+  instance of ctrl to the value currently entered in the input box. -->
+    <form ng-submit="ctrl.submit()">
+
+      <!--
+      we did not declare a self.user in the controller.
+      while binding, angular automatically creates keys and values
+      responsible for binding.
+      this is if we use ng-model.
+        -->
+
+      <input type="text" ng-model="ctrl.user.name" placeholder="Enter your name">
+      <input type="password" ng-model="ctrl.user.password" placeholder="Enter your password">
+      <input type="submit" name="" value="Submit">
+    </form>
+    <p> You entered : {{ctrl.userName}} </p>
+  </body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Complex Form</title>
+
+    <!--Loading the Angular library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js">
+    </script>
+
+    <script type="text/javascript">
+
+      angular.module("myApp",[])
+      .controller("myController",[
+
+        function()
+        {
+            var self=this;
+
+            self.submit=function()
+            {
+              console.log(self.user);
+            };
+      }]);
+
+    </script>
+  </head>
+  <body ng-controller="myController as ctrl">
+
+    <form name="myForm" ng-submit="ctrl.submit()">
+
+      <!-- TEXTAREA -->
+      <!--
+      All the data-bindings,error states and css classes remain the same for form
+      elements also
+        -->
+      <textarea name="aboutMe" rows="8" cols="80" ng-model="ctrl.user.aboutHimself"
+       required ng-minlength="5">
+      </textarea>
+      <br>
+      <span ng-show="myForm.aboutMe.$invalid"> Fill up the above properly </span>
+      <br>
+
+      <!-- CHECKBOXES -->
+
+      <!-- form 1 -->
+      <!--
+      if the checkbox is checked, user.likesFootball is set to true.
+      else set to false.
+      -->
+      <p>do you like football? </p>
+      <input type="checkbox" name="footballLike" value="" ng-model="ctrl.user.likesFootball">
+
+      <!-- form 2 -->
+      <!--
+      what if i want to associate a value to the attribute if checked?
+
+      if the checkbox is checked, user.likesFootball is set to Hell yeah.
+      else set to umm.
+      -->
+      <p>do you like football? </p>
+      <input type="checkbox" name="footballLikeText" value="" ng-model="ctrl.user.likesFootballText"
+      ng-true-value="Hell yeah" ng-false-value="umm"
+      >
+
+      <!-- form 3 -->
+
+      <!-- make it kind of one way binding -->
+      <p>do you like Rooney? </p>
+      <input type="checkbox" name="footballLikeRooney" value=""
+      ng-model="ctrl.user.likesRooney"
+      ng-checked="ctrl.user.likesFootballText=='Hell yeah'"
+      >
+
+
+      <!-- Radio Buttons -->
+
+      <!-- basic one -->
+
+      <div ng-init="user = { gender : 'Female'}">
+
+        <p> Male </p>
+        <input type="radio" name="gender" value="Male" ng-model="ctrl.user.gender">
+        <br>
+        <p> Female </p>
+        <input type="radio" name="gender" value="Female" ng-model="ctrl.user.gender">
+      </div>
+
+
+      <!-- Drop Down Boxes -->
+
+      <div ng-init="location = 'India'">
+        <select ng-model="ctrl.user.location">
+          <option value="India"> India </option>
+          <option value="USA"> USA </option>
+          <option value="NOTA"> None of the Above</option>
+
+        </select>
+      </div>
+      <input type="submit" name="" value="Submit">
+    </form>
+
+  </body>
+</html>

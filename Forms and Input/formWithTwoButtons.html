@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Basic Forms</title>
+
+    <!--Loading the Angular library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js">
+    </script>
+
+    <script type="text/javascript">
+
+      angular.module("myApp",[])
+      .controller("myController",[
+
+      function(){
+
+          var self=this;
+
+          self.userName='nothing';
+          self.password='nothing';
+
+          self.changed=function()
+          {
+            self.userName="UserName Changed";
+            self.password="********";
+          };
+
+          self.submit=function()
+          {
+            console.log("Submitted with :",self.userName,self.password);
+          };
+
+      }]);
+
+    </script>
+  </head>
+  <body ng-controller="myController as ctrl">
+
+    <!-- ng-model is used to bind the variable of userName in this
+  instance of ctrl to the value currently entered in the input box. -->
+    <input type="text" ng-model="ctrl.userName">
+    <input type="text" ng-model="ctrl.password">
+
+    <input type="button" ng-click="ctrl.changed()" value="Change">
+    <input type="button" ng-click="ctrl.submit()" value="Submit">
+
+
+    <p> You entered : {{ctrl.userName}} </p>
+  </body>
+</html>

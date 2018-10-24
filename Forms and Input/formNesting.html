@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" ng-app="myApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Nested Forms</title>
+
+    <!--Loading the Angular library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js">
+    </script>
+
+    <script type="text/javascript">
+
+      angular.module("myApp",[])
+      .controller("myController",[
+
+      function()
+      {
+
+          var self=this;
+
+          self.submit = function()
+          {
+            console.log(self.user);
+          }
+
+      }]);
+
+    </script>
+  </head>
+  <body ng-controller="myController as ctrl">
+
+    <form name="myForm" novalidate ng-submit="ctrl.submit()">
+      <input type="text" name="username" ng-model="ctrl.user.username"
+      placeholder="Enter your username" required ng-minlength="4"
+      />
+
+      <input type="password" name="password" ng-model="ctrl.user.password"
+      placeholder="Enter your password" required ng-minlength="6"
+      />
+
+      <ng-form name="profile">
+        <input type="text" name="firstName" ng-model="ctrl.user.profile.firstName"
+        placeholder="Enter your first" required
+        />
+
+        <input type="text" name="lastName" ng-model="ctrl.user.profile.lastName"
+        placeholder="Enter your lastname" required
+        />
+
+        <input type="date" name="date" ng-model="ctrl.user.profile.dob"
+        placeholder="Date of Birth" required
+        />
+
+      </ng-form>
+
+      <span ng-show="myForm.profile.$invalid">
+        Please fill out the info.
+      </span>
+
+      <input type="submit" name="" value="Submit" ng-disabled="myForm.$invalid">
+    </form>
+
+  </body>
+</html>
