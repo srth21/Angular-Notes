@@ -4,9 +4,11 @@
     <style media="screen">
       .done {
         background-color: green;
+        border : solid 1px black;
         }
         .pending {
         background-color: red;
+        border : solid 3px red;
         }
     </style>
     <meta charset="utf-8">
@@ -35,6 +37,7 @@
 
         self.getNoteClass = function(status)
         {
+          //returns done if status is true and pending is isn't
           return {
             done : status,
             pending : !status
@@ -52,16 +55,23 @@
     iterate over a list and apply to a new DOM Element
     seperatelly.
       -->
+
+    <!--
+
+      ng-class is set to the string that is returned from the function.
+
+    -->
     <div ng-repeat="note in main.notes"
-      ng-class="main.getClass(note.done)">
+      ng-class="main.getNoteClass(note.done)">
+
       <p> Hi {{note.name}}. Your USN is {{note.usn}}. </p>
 
       <!-- ng-show displays based on a condition -->
-
       <span class="assignee"
       ng-show="note.lastname"
       ng-bind="note.lastname">
       </span>
+
     </div>
 
   </body>
