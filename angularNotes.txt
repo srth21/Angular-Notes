@@ -9,8 +9,9 @@ MVC Paradigm : Model View Controller
   1.model : data behind the app
   2.view : the UI
   3.controller : presentation layer, does data fetching and presentation
-controller decides which parts of the model are presented to the user
-split of responsibilities and making each role independent
+	controller decides which parts of the model are presented to the user
+- each unit is responsible for only one thing
+- they are independent of each other.
 
 benefits
   -single page application framework : abstracts a lot when compared to js
@@ -20,51 +21,63 @@ benefits
   -easy to unit test
 
 philosophy
-  -data driven : with single page applications we need to change the part of the
-  page that is modified and re-render the entire page
-  -data binding : can bind data two way between angular and html, no need to
-  funnel it manually
-      example :this is js to dom
+  -data driven : with single page applications we need to change the part of the page that is modified and not re-render the entire page
+  -data binding : can bind data two way between angular and html, no need to funnel it manually
+      example :
+      		
+      		1.this is js to dom
                 <h2> {name} </h2>
                 set name variable in the js and this automatically changes
-              from dom to js :
+            
+            2.from dom to js :
                 say input text with id = name
                 getting the value:
                 name : $('#name').value()
               both of these is one way data binding
-            angular js takes care of two way data binding also
+            
+            3.angular js takes care of two way data binding also
               can use in forms with directives
-              setting ng-model of any input attribute
+              setting ng-model of any input attribute.
+
+              The two-way data-binding ensures that our controller and
+			  the UI share the same model, so that updates to one (either from the UI or in our code) update the other automatically.
 
               <form name="myform" ng-submit="ctrl.submit()">
                 <input type="text" ng-model="user.name">
                 <input type="text" ng-model="user.section">
               </form>
 
-              whenever a value is entered into the ui input, corresonding user
-              object gets updated in the js.
-              also is we change user object in the js, dom gets updated
-  -declarative paradigm : we specify in the html only what task we are trying to
-    accomplish. this is done through something angular js called directives.
+              whenever a value is entered into the ui input, corresonding user object gets updated in the js.
+
+              also is we change user object in the js, dom gets updated.
+  
+  -declarative paradigm :
+  	in the normal imperative paradigm, we cannot understand what html elements usually represents. Say we are building tabs,we do not understand that in html. only after we apply css and js we realise what the html element is doing. this is shabby.
+
+  	in the declarative design ,we specify in the html only what task we are trying to accomplish. this is done through something angular js called directives. Say for the tabs example, we can create a tabs directive and just use it. The naming defines what is done and the entire functionality is encapsulated. also, if we need to change the working of any directive, we only change it in the place where we have implemented it and not anywhere else.
+
   -seperation of concerns using MVC
+  
   -enforces easy testing
 
--we can tell angular to work on only a section of the html and not the entire
-thing
+-we can tell angular to work on only a section of the html and not the entire thing.
 
+--At this point, refer Basic App/index.html.--
 
-CHAPTER 2
+CHAPTER 2 : basic angular js directives and controllers.
 
 angular js modules
   -way of packaging relevant code under a single name
   -two things can be done:
     - a module can define its own controllers
     - a module can add a dependancy to another module and use its functions
-  -we can also tell angular js what module to load to bootstrap an application
+  -we can also tell angular js what module to load to bootstrap an application.
 
   defining a module :
     syntax:
+
       - angular.module('notesApp',[]);
+      
       first argument is the name of the module
       second argument is the list of dependancies
 
@@ -72,8 +85,11 @@ angular js modules
         angular.module('notesApp');
           load notesApp and make it available for use in this file
           need to load the file that defines the module first
-      The ng-app directive takes an optional argument, which is the name of
-      the module to load during bootstrapping.
+      
+      The ng-app directive takes an optional argument, which is the name of the module to load during bootstrapping.
+      example : two ways to use it 
+      	1. <body ng-app> </body>
+      	2. <body ng-app="notesApp"> </body>
 
 controllers : js functions that trigger the work
 work of a controller :
@@ -81,8 +97,7 @@ work of a controller :
 • Deciding which parts of that data to show to the user
 • Presentation logic, such as how to display elements, which parts of the UI to show,
 how to style them, etc.
-• User interactions, such as what happens when a user clicks something or how a text
-input should be validated
+• User interactions, such as what happens when a user clicks something or how a text input should be validated
 
 controller definition syntax :
 angular.module("notesApp",[])
@@ -104,30 +119,42 @@ angular.module("notesApp",[])
         1.all the element except the last element denote the dependancies for
         this controller
         2. last element is the controller definition
-        if there are no dependancies, only one element is there which is the
-        controller definition
+        if there are no dependancies, only one element is there which is the controller definition
 
 ng-controller directive : ng-controller tells Angular to instantiate an
 instance of that controller and attach it to the DOM Element
 
-ng-repeat directive : When we use the ng-repeat directive, the contents of the element on which the directive
-is applied is considered the template of the ng-repeat. AngularJS picks up this template,
-makes a copy of it, and then applies it for each instance of the ng-repeat
+Only the variables defined on the controller's instance using the this keyword are visible in the UI and not the local variables defined in the controller using var.
+
+--- Check Controllers/index.html and Controllers/controllers2.html at this point.
+
+ng-click is used to bind a button click to a function defined in the controller. The function is called on clicking the button.
+
+--- Check Controllers/controllers3.html at this point ---
+
+ng-repeat directive : 
+When we use the ng-repeat directive, the contents of the element on which the directive is applied, is considered the template of the ng-repeat. AngularJS picks up this template, makes a copy of it, and then applies it for each element of the array associated with ng-repeat.
+
+--- Check Controllers/controllerWithArrays.html at this point. ----
+
+What happens when we open a html page with angular?
+	1.HTML loaded and triggers requests for all the scripts that are a part of it.
+	2.AngularJs kicks in and looks for the ng-app.
+	3.Looks for the ng-module specified and attaches it to the DOM Element.
+	4.AngularJs then traverses the DOM of elements of the root element and starts looking for directives and binds statements.
+	5.Each time it encounters an ng-controller or ng-repeat, it defines the scope for the element. The scope for the element defines the funtions, variables the particular element has access to.
+	6.AngularJs then adds watchers and listeners on the variables.
 
 ng-show directive : ng-show
-There are two directives in AngularJS that deal with hiding and showing HTML
-elements: ng-show and ng-hide. They inspect a variable and, depending on the
-truthiness of its value, show or hide elements in the UI, respectively.
+There are two directives in AngularJS that deal with hiding and showing HTML elements: ng-show and ng-hide. They inspect a variable and, depending on the truthiness of its value, show or hide elements in the UI, respectively.
 
 ng-class
-The ng-class directive is used to selectively apply and remove CSS classes from
-elements. There are multiple ways of using ng-class, and we will talk about what
-we feel is the most declarative and cleanest option. The ng-class directive can take
-strings or objects as values. If it is a string, it simply applies the CSS classes directly.
-If it is an object (which we are returning from the function in the controller), AngularJS
-takes a look at each key of the object, and depending on whether the value
-for that key is true or false, applies or removes the CSS class.
+The ng-class directive is used to selectively apply and remove CSS classes from elements. There are multiple ways of using ng-class, and we will talk about what we feel is the most declarative and cleanest option. 
+The ng-class directive can take strings or objects as values. If it is a string, it simply applies the CSS classes directly.
 
+If it is an object (which we are returning from the function in the controller), AngularJS takes a look at each key of the object, and depending on whether the value for that key is true or false, applies or removes the CSS class.
+
+-- Check Controllers/controller4.html at this point ---
 
 if we are using ng-repeat over a dictionary :
 
@@ -135,12 +162,9 @@ if we are using ng-repeat over a dictionary :
   <p> key </p>
   <p> value </p>
 </div>
+note that the value can be another dictionary, so in that case we can access its attribtues using the value and . with the attribute name.
 
-note that the value can be another dictionary, so in that case we can access
-its attribtues using the value and . with the attribute name.
-
-in this case, they keys will get sorted in alphabetical order with uppercase first
-and then lower case.
+in this case, they keys will get sorted in alphabetical order with uppercase first and then lower case.
 
 We can add helper variables with ng-repeat while iterating:
 example :
@@ -153,6 +177,8 @@ example :
 
 Each of the $ prefixed elements refer to the state of the element
 
+--- Check Controllers/controllerNGRepeatWithHelper.html at this point ---
+
 CHAPTER 4
 
 FORMS, INPUTS and SERVICES
@@ -162,71 +188,169 @@ For inputs and two way binding : ng-model
 
 usage of ng-model:
 
-<!-- ng-model is used to bind the variable of userName in this
-instance of ctrl to the value currently entered in the input box. -->
-  <input type="text" ng-model="ctrl.userName">
+<input type="text" ng-model="ctrl.userName">
 
-• If we need to update the form element in the UI, all we need to do is update the
-value in the controller. No need to go looking for input fields by IDs or CSS class
-selectors; just update the model.
-• If we need to get the latest value that the user entered into the form or input to
-validate or send to the server, we just need to grab it from our controller. It will have
-the latest value in it.
+ng-model is used to bind the variable of userName in this
+instance of ctrl to the value currently entered in the input box.
+
+
+• If we need to update the form element in the UI, all we need to do is update the value in the controller. No need to go looking for input fields by IDs or CSS class selectors. just update the model.
+• If we need to get the latest value that the user entered into the form or input to validate or send to the server, we just need to grab it from our controller. It will have the latest value in it.
+
+--- Check Forms And Input/input1.html at this point ---
 
 ng-click is the directive to bind a button click event to a function
-if we are using it for a form itself, we can add ng-submit directive to the form
-directly
+if we are using it for a form itself, we can add ng-submit directive to the form directly. 
+ng-submit gets triggered on pressing enter on any of the text elements in the form also. this does not happen on ng-click.
+
+--- Check Forms And Input/simpleForm.html at this point ---
 
 Form Validation and States :
 
+When we use forms, AngularJs creates a FormController that holds the current state of the form and some helper methods.
+The FormController for the form can be accessed using the name of the form.
+
+example if we have 
+	<form name"myForm">
+	</form>
+
+	myForm.$invalid is a way to access the helper method $invalid provided by the FormController for this form.
+
 Form  states :
 
-$invalid :AngularJS sets this state when any of the validations (required, ng-minlength, and others) mark any of
-the fields within the form as invalid.
-$valid :The inverse of the previous state, which states that all the validations in the form are currently evaluating to
-correct.
-$pristine :All forms in AngularJS start with this state. This allows you to figure out if a user has started typing in and
-modifying any of the form elements. Possible usage: disabling the reset button if a form is pristine.
-$dirty :The inverse of $pristine, which states that the user made some changes (he can revert it, but the $dirty
-bit is set).
-$error :This field on the form houses all the individual fields and the errors on each form element. We will talk more
-about this in the following section.
+	$invalid :AngularJS sets this state when any of the validations (required, ng-minlength, and others) mark any of the fields within the form as invalid.
+
+	$valid :The inverse of the previous state, which states that all the validations in the form are currently evaluating to
+	correct.
+
+	$pristine :All forms in AngularJS start with this state. This allows you to figure out if a user has started typing in and modifying any of the form elements. Possible usage: disabling the reset button if a form is pristine.
+
+	$dirty :The inverse of $pristine, which states that the user made some changes (he can revert it, but the $dirty
+	bit is set).
+
+	$error :This field on the form houses all the individual fields and the errors on each form element. 
 
 these can be accessed with formname.$valid etc
 
 can be used to conditionally enable or disable form elements.
 ng-disbaled="myForm.$invalid";
 
+--- Check Forms and Input/formValidation.html at this point ---
+
 Built In validations
-required :As previously discussed, this ensures that the field is required, and the field is marked invalid until it is
-filled out.
-ng-required :Unlike required, which marks a field as always required, the ng-required directive allows us to
-conditionally mark an input field as required based on a Boolean condition in the controller.
-ng-minlength :We can set the minimum length of the value in the input field with this directive.
-ng-maxlength :We can set the maximum length of the value in the input field with this directive.
-ng-pattern T:he validity of an input field can be checked against the regular expression pattern specified as part of this
-directive.
-type="email" :Text input with built-in email validation.
-type="number" :Text input with number validation. Can also have additional attributes for min and max values of the
-number itself.
-type="date" :If the browser supports it, shows an HTML datepicker. Otherwise, defaults to a text input. The ngmodel
-that this binds to will be a date object. This expects the date to be in yyyy-mm-dd format (e.g.,
-2009-10-24).
-type="url" :Text input with URL validation.
+
+	required :As previously discussed, this ensures that the field is required, and the field is marked invalid until it is filled out.
+
+	ng-required :Unlike required, which marks a field as always required, the ng-required directive allows us to conditionally mark an input field as required based on a Boolean condition in the controller.
+
+	ng-minlength :We can set the minimum length of the value in the input field with this directive.
+
+	ng-maxlength :We can set the maximum length of the value in the input field with this directive.
+
+	ng-pattern : The validity of an input field can be checked against the regular expression pattern specified as part of this
+	directive.
+
+	type="email" :Text input with built-in email validation.
+
+	type="number" :Text input with number validation. Can also have additional attributes for min and max values of the
+	number itself.
+
+	type="date" :If the browser supports it, shows an HTML datepicker. Otherwise, defaults to a text input. The ngmodel that this binds to will be a date object. This expects the date to be in yyyy-mm-dd format (e.g.2009-10-24).
+
+	type="url" :Text input with URL validation.
+
+Displaying error messages and telling the user what is wrong in the form
+
+	<form name="myForm">
+
+		<input type="text" name="uname" ng-minlength = "4" required />
+		<span ng-show="myForm.uname.$error.minlength">Thats what she said. </span>
+		<span ng-show="myForm.uname.$error.required">Needed.</span>
+
+	</form>
+
+	Accessing the error parameters of a field based on the condition.
 
 We can also add classes to an element based on its state.
-required: ng-valid-required or ng-invalid-required
-min: ng-valid-min or ng-invalid-min
-max: ng-valid-max or ng-invalid-max
-minlength: ng-valid-minlength or ng-invalid-minlength
-maxlength: ng-valid-maxlength or ng-invalid-maxlength
-pattern: ng-valid-pattern or ng-invalid-pattern
-url: ng-valid-url or ng-invalid-url
-email: ng-valid-email or ng-invalid-email
-date: ng-valid-date or ng-invalid-date
-number: ng-valid-number or ng-invalid-number
+	required: ng-valid-required or ng-invalid-required
+	
+	min: ng-valid-min or ng-invalid-min
+	
+	max: ng-valid-max or ng-invalid-max
+	
+	minlength: ng-valid-minlength or ng-invalid-minlength
+	
+	maxlength: ng-valid-maxlength or ng-invalid-maxlength
+	
+	pattern: ng-valid-pattern or ng-invalid-pattern
+	
+	url: ng-valid-url or ng-invalid-url
+	
+	email: ng-valid-email or ng-invalid-email
+	
+	date: ng-valid-date or ng-invalid-date
+	
+	number: ng-valid-number or ng-invalid-number
 
 Nested Forms using ng-form
 
 html form tags cant be nested
 ng-form directive can be used to nest a form within another form
+
+Chapter 6 : Server Communication using $http
+
+
+GET
+	Using XMLHttpRequest is a lot of work.
+	$http is a core angular service that allows us to communicate with teh server endpoints using XHR.
+
+	Say we are using a server running on flask and the app route for a function is /app/getNames/.
+
+	Then we can use it as : 
+		angular.module("notesApp",[])
+		.controller('mainCtrl',['$http',
+
+			function($http)
+			{
+				var self = this;
+
+				self.items = [];
+
+				$http.get('/app/getNames/').then(
+					function(response)
+					{
+							self.items = response.data;
+					},
+					function(errorResponse)
+					{
+						console.log("Error");
+					}
+
+				);
+			}
+
+		]);
+POST
+	
+	angular.module('myModule',[])
+	.controller('myController',['$http',
+
+		function($http)
+		{
+			var self = this;
+
+			self.dataToBeSent = "";
+			self.dataSent = false;
+
+			$http.post('/app/postHere/',self.dataToBeSent)
+			.then(
+				function(response)
+				{
+					self.dataToBeSent = "sent";
+					self.dataSent = true;
+				}
+
+			);
+
+		}
+	]);
